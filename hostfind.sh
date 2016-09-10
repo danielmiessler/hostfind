@@ -4,38 +4,30 @@
 #  include in a scan
 
 # Variables to be used
-hostnames=`cat ./list`
-domain=`cat ./domain`
+hostnames=$(cat ./list)
 
-# Prompt them
+domain=$(cat ./domain)
+
+# Banner
 echo ""
 echo "-------------------------------------------------------"
 echo "- Hostfind -- A lame tool for finding hostnames to scan"
 echo "-------------------------------------------------------"
-sleep 1
 
 echo ""
 echo "Searching $domain..."
-# Clean the previous hosts found
-if [ -f ./dischosts ]
-then 
-   rm ./dischosts
-fi
 
-# Loop through the possible hostnames
-for i in $hostnames
+# Loop through the given hostnames
+for hostname in $hostnames
 do
-    nmap -sL $i.$domain >> dischosts 2> /dev/null
+    ipaddress=$(host $hostname.$domain 2> /dev/null | grep "has address" | cut -d" " -f4)
+
+    if [ ! -z "$ipaddress" ]; then
+
+        #echo $hostname.$domain:$ipaddress
+
+	#Keep original functionality
+        echo $hostname.$domain
+    fi
+
 done
-
-# Clean up the output
-grep ^Host dischosts | cut -f2 >> cleanedhosts
-
-# Display the results
-echo ""
-cat cleanedhosts
-echo ""
-echo "Enjoy..."
-
-# Clean up for next time
-rm cleanedhosts
