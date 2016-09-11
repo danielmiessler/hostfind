@@ -3,10 +3,12 @@
 # Hostfind -- A lame tool for finding hostnames to
 #  include in a scan
 
-# Variables to be used
-hostnames=$(cat ./list)
+domain=$1
+hostnames=$2
 
-domain=$(cat ./domain)
+if [ -z "$hostnames" ]; then
+    hostnames=$(cat ./list)
+fi
 
 # Banner
 echo ""
