@@ -14,7 +14,7 @@ to stdout.
 Original work by: Daniel Miessler
 Refactored by: Zachary Keeton
 
-Examples:
+Usage:
 
 hostfind.sh [[-f file] domain_name] | -h
 
