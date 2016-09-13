@@ -14,10 +14,6 @@ to stdout.
 Original work by: Daniel Miessler
 Refactored by: Zachary Keeton
 
-Usage:
-
-hostfind.sh DOMAIN [HOSTNAMES_FILE]
-
 Examples:
 
 hostfind.sh [[-f file] domain_name] | -h
