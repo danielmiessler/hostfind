@@ -17,24 +17,45 @@
 #  Refactored by: Zachary Keeton
 #
 #  -------------------------------------------------------
-PROGRAM_NAME=(basename $0)
 
-# Read in the domain name (eg. 'microsoft.com'). REQUIRED
-domain=$1
+usage () {
+    echo "$PROGRAM_NAME: usage: $PROGRAM_NAME [[-f file] domain_name] | -h"
+	echo
+	echo "-f|--file		a file of host names. optional. Defaults to Miessler original"
+	echo "-h|help		display this help and exit"
+	echo "domain		the domain to test"
+	echo
+	echo "Examples:"		
+	echo "			hostfind.sh -f mylist microsoft.com"
+	echo "			hostfind.sh microsoft.com"
+    return
+}
 
-# If domain name not given, prompt with instructions and exit 1.
+PROGRAM_NAME=$(basename $0)
+hostnames="access citrix dns extranet firewall fw gateway mail mail1 mail2 ns ns1 ns2 pop3 proxy remote secure smtp ssh test www"
+domain=
+
+while [[ -n $1 ]]; do
+	case $1 in
+		-f|--file)
+			shift
+			hostnames=$(cat $1)
+			shift
+			;;
+		-h|--help)
+			usage
+			exit
+			;;
+		*)
+			domain=$1
+			shift
+			;;
+	esac
+done
+
 if [ -z "$domain" ]; then
-    echo "Error: No domain name specified" 1>&2
-    echo "$PROGRAM_NAME: usage: $PROGRAM_NAME domain_name [hostnames_file]" 1>&2
+    usage >&2
     exit 1
-fi
-
-# Read in the file of host names. OPTIONAL
-hostnames=$2
-
-# If no hostnames file is given as the second argument, use this default list.
-if [ -z "$hostnames" ]; then
-    hostnames="access citrix dns extranet firewall fw gateway mail mail1 mail2 ns ns1 ns2 pop3 proxy remote secure smtp ssh test www"
 fi
 
 for hostname in $hostnames; do
