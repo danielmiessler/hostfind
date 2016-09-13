@@ -17,6 +17,7 @@
 #  Refactored by: Zachary Keeton
 #
 #  -------------------------------------------------------
+PROGRAM_NAME=(basename $0)
 
 # Read in the domain name (eg. 'microsoft.com'). REQUIRED
 domain=$1
@@ -24,7 +25,7 @@ domain=$1
 # If domain name not given, prompt with instructions and exit 1.
 if [ -z "$domain" ]; then
     echo "Error: No domain name specified" 1>&2
-    echo "Usage: $0 domain_name [hostnames_file]" 1>&2
+    echo "$PROGRAM_NAME: usage: $PROGRAM_NAME domain_name [hostnames_file]" 1>&2
     exit 1
 fi
 
