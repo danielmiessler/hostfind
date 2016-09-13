@@ -20,7 +20,12 @@ hostfind.sh DOMAIN [HOSTNAMES_FILE]
 
 Examples:
 
-./hostfind.sh microsoft.com
+hostfind.sh [[-f file] domain_name] | -h
 
-./hostfind.sh microsoft.com ./hostnamefile
+-f|--file         a file of host names. optional. Defaults to Miessler original
+-h|help           display this help and exit
+domain            the domain to test
 
+Examples:                
+	hostfind.sh -f mylist microsoft.com
+	hostfind.sh microsoft.com
