@@ -22,7 +22,7 @@ usage () {
     echo "$PROGRAM_NAME: usage: $PROGRAM_NAME [[-f file] domain_name] | -h"
 	echo
 	echo "-f|--file		a file of host names. optional. Defaults to Miessler original"
-	echo "-h|help		display this help and exit"
+	echo "-h|--help		display this help and exit"
 	echo "domain		the domain to test"
 	echo
 	echo "Examples:"		
