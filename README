@@ -1,5 +1,5 @@
 
-Hostfind -- A lame tool for finding hostnames to scan
+Hostfind -- A tool for finding hostnames to scan
 
 Takes a domain name and an optional dictionary file
 of hostnames and does an iterative DNS lookup for
@@ -16,10 +16,10 @@ Refactored by: Zachary Keeton
 
 Usage:
 
-hostfind.sh [[-f file] domain_name] | -h
+hostfind.sh [-f file] domain_name | -h
 
 -f|--file         a file of host names. optional. Defaults to Miessler original
--h|help           display this help and exit
+-h|--help           display this help and exit
 domain            the domain to test
 
 Examples:                
