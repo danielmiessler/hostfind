@@ -1,41 +1,63 @@
 #!/bin/bash
 
-# Hostfind -- A lame tool for finding hostnames to
-#  include in a scan
+#  -------------------------------------------------------
+#  Hostfind -- A lame tool for finding hostnames to scan
+#
+#  Takes a domain name and an optional dictionary file
+#  of hostnames and does an iterative DNS lookup for
+#  host.domain.
+#
+#  If no hostname file is provided by the user, Daniel
+#  Miessler's original list is hardcoded as a default list.
+#
+#  Domains that have IPv4 address are printed
+#  to stdout.
+#
+#  Original work by: Daniel Miessler
+#  Refactored by: Zachary Keeton
+#
+#  -------------------------------------------------------
 
-# Variables to be used
-hostnames=`cat ./list`
-domain=`cat ./domain`
+usage () {
+    echo "$PROGRAM_NAME: usage: $PROGRAM_NAME [[-f file] domain_name] | -h"
+	echo
+	echo "-f|--file		a file of host names. optional. Defaults to Miessler original"
+	echo "-h|--help		display this help and exit"
+	echo "domain		the domain to test"
+	echo
+	echo "Examples:"		
+	echo "			hostfind.sh -f mylist microsoft.com"
+	echo "			hostfind.sh microsoft.com"
+    return
+}
 
-# Prompt them
-echo ""
-echo "-------------------------------------------------------"
-echo "- Hostfind -- A lame tool for finding hostnames to scan"
-echo "-------------------------------------------------------"
-sleep 1
+PROGRAM_NAME=$(basename $0)
+hostnames="access citrix dns extranet firewall fw gateway mail mail1 mail2 ns ns1 ns2 pop3 proxy remote secure smtp ssh test www"
+domain=
 
-echo ""
-echo "Searching $domain..."
-# Clean the previous hosts found
-if [ -f ./dischosts ]
-then 
-   rm ./dischosts
-fi
-
-# Loop through the possible hostnames
-for i in $hostnames
-do
-    nmap -sL $i.$domain >> dischosts 2> /dev/null
+while [[ -n $1 ]]; do
+	case $1 in
+		-f|--file)
+			shift
+			hostnames=$(cat $1)
+			shift
+			;;
+		-h|--help)
+			usage
+			exit
+			;;
+		*)
+			domain=$1
+			shift
+			;;
+	esac
 done
 
-# Clean up the output
-grep ^Host dischosts | cut -f2 >> cleanedhosts
+if [ -z "$domain" ]; then
+    usage >&2
+    exit 1
+fi
 
-# Display the results
-echo ""
-cat cleanedhosts
-echo ""
-echo "Enjoy..."
-
-# Clean up for next time
-rm cleanedhosts
+for hostname in $hostnames; do
+    host $hostname.$domain 2> /dev/null | grep "has address" | awk -v n=$hostname.$domain '{ print n, $4 }' &
+done

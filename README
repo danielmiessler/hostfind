@@ -1,0 +1,27 @@
+
+Hostfind -- A tool for finding hostnames to scan
+
+Takes a domain name and an optional dictionary file
+of hostnames and does an iterative DNS lookup for
+host.domain.
+
+If no hostname file is provided by the user, Daniel
+Miessler's original list is hardcoded as a default list.
+
+Domains that have IPv4 address are printed
+to stdout.
+
+Original work by: Daniel Miessler
+Refactored by: Zachary Keeton
+
+Usage:
+
+hostfind.sh [-f file] domain_name | -h
+
+-f|--file         a file of host names. optional. Defaults to Miessler original
+-h|--help           display this help and exit
+domain            the domain to test
+
+Examples:                
+	hostfind.sh -f mylist microsoft.com
+	hostfind.sh microsoft.com
